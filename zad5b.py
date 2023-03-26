@@ -12,7 +12,7 @@ print(len(Ns))
 Ks = [2, 3, 10, 100, 400]
 
 for i in range(0, len(res)):
-    plt.plot(Ns, res[i], label="K = " + str(Ks[i]))
+    plt.scatter(Ns, res[i], label="K = " + str(Ks[i]), s=2)
     plt.legend(loc='upper right')
     plt.savefig("data/plots/exp5b" + str(Ks[i]), bbox_inches="tight")
     plt.close()

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -72,8 +73,18 @@ func Ex5c(Ns []uint) {
 	fmt.Println("Done Ex5c")
 }
 
-func Exp6(Ns []uint) {
+func Ex6(Ns []uint) {
 	fmt.Println("Running Ex6")
+
+	filename := "data/exp6.txt"
+	f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
+
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	defer f.Close()
 
 	bytes := []uint{1, 2, 3, 4, 5, 6}
 
@@ -81,15 +92,60 @@ func Exp6(Ns []uint) {
 		fmt.Println("Running for b = ", b)
 
 		avgSha1 := getAvgRes(Ns, 333, Hash_sha1, b)
+		avgSha3 := getAvgRes(Ns, 333, Hash_sha3, b)
 		avgSha256 := getAvgRes(Ns, 333, Hash_sha256, b)
-		avgBlake2 := getAvgRes(Ns, 333, Hash_blake2b, b)
+		avgBlake2b := getAvgRes(Ns, 333, Hash_blake2b, b)
+		avgBlake2s := getAvgRes(Ns, 333, Hash_blake2s, b)
+		avgMd5 := getAvgRes(Ns, 333, Hash_md5, b)
 
 		fmt.Printf("Sha1 avg difference = %G\n", avgSha1)
+		fmt.Printf("Sha3 avg difference = %G\n", avgSha3)
 		fmt.Printf("Sha256 avg difference = %G\n", avgSha256)
-		fmt.Printf("ShaBlake2b avg difference = %G\n", avgBlake2)
+		fmt.Printf("ShaBlake2b avg difference = %G\n", avgBlake2b)
+		fmt.Printf("ShaBlake2s avg difference = %G\n", avgBlake2s)
+		fmt.Printf("Md5 avg difference = %G\n", avgMd5)
+
+		fmt.Fprintf(f, "%G %G %G %G %G %G\n", avgSha1, avgSha3, avgSha256, avgBlake2b, avgBlake2s, avgMd5)
 	}
 
 	fmt.Println("Done Ex6")
+}
+
+func Ex7(Ns []uint) {
+	fmt.Println("Running Ex7")
+	var k uint = 400
+	alphas := []uint{9500, 9900, 9950}
+	h := Hash_sha256
+
+	res := runForGivenK(Ns, k, h, 4)
+
+	sort.Slice(res, func(i, j int) bool { return res[i] < res[j] })
+
+	for _, alpha := range alphas {
+		right := 1.0
+		left := 0.0
+		fmt.Println("Running Ex5c for alpha = ", alpha)
+		for left <= right {
+			var mid = (left + right) / 2
+
+			// fmt.Println("Running Ex7 for alpha = ", alpha, " and delta = ", mid, " ", left, " ", right)
+
+			counter := getCountInRangeInSorted(res, mid)
+
+			if mid == 0.09089266946923372 {
+				fmt.Println("sadfsad")
+			}
+			if counter >= alpha {
+				right = math.Nextafter(mid, 0.0)
+			} else {
+				left = math.Nextafter(mid, math.MaxFloat64)
+			}
+
+		}
+		fmt.Println("Delta for alpha = ", alpha, " - ", left)
+	}
+
+	fmt.Println("Done Ex7")
 }
 
 func runForGivenK(Ns []uint, k uint, h func(uint, uint) float64, hashLength uint) []float64 {
@@ -114,4 +170,24 @@ func getAvgRes(Ns []uint, k uint, h func(uint, uint) float64, hashLength uint) f
 
 	return sumOfDiffs
 
+}
+
+func getCountInRangeInSorted(results []float64, delta float64) uint {
+	low, high := 0, len(results)-1
+
+	for i, f := range results {
+		if f >= 1.0-delta {
+			low = i
+			break
+		}
+	}
+
+	for i := high; i >= 0; i-- {
+		if results[i] <= 1.0+delta {
+			high = i
+			break
+		}
+	}
+
+	return uint(high-low) + 1
 }

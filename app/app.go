@@ -20,5 +20,6 @@ func main() {
 	// }
 	// pkg.Ex5b(Ns)
 	// pkg.Ex5c(Ns)
-	pkg.Exp6(Ns)
+	// pkg.Ex6(Ns)
+	pkg.Ex7(Ns)
 }

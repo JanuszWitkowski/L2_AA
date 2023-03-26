@@ -20,7 +20,7 @@ func MultiSet_newMultiSet(n uint, nums ...uint) *MultiSet {
 		n:         n,
 		counter:   0,
 		first:     (n * (n - 1)) / 2,
-		elemsLeft: left - 1,
+		elemsLeft: left,
 	}
 }
 
@@ -29,10 +29,12 @@ func (ms *MultiSet) Next() (uint, error) {
 		return 0, errors.New("no elems left")
 	}
 
+	ret := ms.first + ms.counter
+
 	ms.elemsLeft -= 1
 	ms.counter = (ms.counter % ms.n) + 1
 
-	return ms.first + ms.counter, nil
+	return ret, nil
 }
 
 // n = 5

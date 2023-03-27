@@ -14,12 +14,27 @@ func main() {
 		Ns[i] = uint(i) + 1
 	}
 
-	// ms := pkg.MultiSet_newMultiSet(5)
-	// for elem, err := ms.Next(); err == nil; elem, err = ms.Next() {
-	// 	fmt.Println(elem)
+	ms := pkg.MultiSet_newMultiSet(4, 2)
+	for elem, err := ms.Next(); err == nil; elem, err = ms.Next() {
+		fmt.Println(elem)
+	}
+
+	// var wg sync.WaitGroup
+	// wg.Add(5)
+	// funcs := []func([]uint){pkg.Ex5a, pkg.Ex5c, pkg.Ex6, pkg.Ex7}
+
+	// for _, f := range funcs {
+	// 	ffunc := f
+	// 	go func() {
+	// 		defer wg.Done()
+	// 		ffunc(Ns)
+	// 	}()
 	// }
+
+	// wg.Wait()
 	// pkg.Ex5b(Ns)
 	// pkg.Ex5c(Ns)
 	// pkg.Ex6(Ns)
-	pkg.Ex7(Ns)
+	pkg.ChGuysDeltas()
+	// pkg.Ex7(Ns)
 }

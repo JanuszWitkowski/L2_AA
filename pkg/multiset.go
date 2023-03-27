@@ -32,7 +32,7 @@ func (ms *MultiSet) Next() (uint, error) {
 	ret := ms.first + ms.counter
 
 	ms.elemsLeft -= 1
-	ms.counter = (ms.counter % ms.n) + 1
+	ms.counter = ((ms.counter + 1) % ms.n)
 
 	return ret, nil
 }

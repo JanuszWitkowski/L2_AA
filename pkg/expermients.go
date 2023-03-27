@@ -8,6 +8,39 @@ import (
 	"strings"
 )
 
+func Ex5a(Ns []uint) {
+	fmt.Println("Running Ex5a")
+
+	Ms := []uint{1, 2, 3, 4}
+
+	filename := "data/exp5a.txt"
+	f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
+
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	defer f.Close()
+
+	for _, m := range Ms {
+		resForM := make([]string, len(Ns))
+		for i, n := range Ns {
+			ms := MultiSet_newMultiSet(n, m)
+			count := Mincount(ms, Hash_blake2b, 333, 6)
+			resForM[i] = fmt.Sprintf("%v", count/float64(n))
+
+			// if i%1000 == 0 {
+			// 	fmt.Printf("Done n = %v for k = %v\n", n, k)
+			// }
+		}
+
+		fmt.Fprint(f, strings.Join(resForM, " ")+"\n")
+		fmt.Println("Done Ex5a for m = ", m)
+	}
+	fmt.Println("Done Ex5a")
+}
+
 func Ex5b(Ns []uint) {
 	fmt.Println("Running Ex5b")
 
@@ -97,6 +130,7 @@ func Ex6(Ns []uint) {
 		avgBlake2b := getAvgRes(Ns, 333, Hash_blake2b, b)
 		avgBlake2s := getAvgRes(Ns, 333, Hash_blake2s, b)
 		avgMd5 := getAvgRes(Ns, 333, Hash_md5, b)
+		avgMd4 := getAvgRes(Ns, 333, Hash_md4, b)
 
 		fmt.Printf("Sha1 avg difference = %G\n", avgSha1)
 		fmt.Printf("Sha3 avg difference = %G\n", avgSha3)
@@ -104,8 +138,9 @@ func Ex6(Ns []uint) {
 		fmt.Printf("ShaBlake2b avg difference = %G\n", avgBlake2b)
 		fmt.Printf("ShaBlake2s avg difference = %G\n", avgBlake2s)
 		fmt.Printf("Md5 avg difference = %G\n", avgMd5)
+		fmt.Printf("Md4 avg difference = %G\n", avgMd5)
 
-		fmt.Fprintf(f, "%G %G %G %G %G %G\n", avgSha1, avgSha3, avgSha256, avgBlake2b, avgBlake2s, avgMd5)
+		fmt.Fprintf(f, "%G %G %G %G %G %G %G\n", avgSha1, avgSha3, avgSha256, avgBlake2b, avgBlake2s, avgMd5, avgMd4)
 	}
 
 	fmt.Println("Done Ex6")
@@ -190,4 +225,50 @@ func getCountInRangeInSorted(results []float64, delta float64) uint {
 	}
 
 	return uint(high-low) + 1
+}
+
+func chebyschevHelper(alpha float64, k uint) {
+	fmt.Println("Chebyschev for alpha = ", alpha, " delta = ", math.Sqrt(1.0/(float64(k)*alpha)))
+}
+
+func chernoffHelper(delta float64, k uint) float64 {
+	eps1 := delta / (1 - delta)
+	eps2 := delta / (1 + delta)
+
+	fk := func(arg float64) float64 {
+		return math.Exp(arg*float64(k)) * math.Pow(1.0-arg, float64(k))
+	}
+
+	return fk(eps2) + fk(-eps1)
+}
+
+func chernoffBinSearch(alpha float64, k uint) {
+
+	left := 0.0
+	right := 1.0
+
+	for left <= right {
+		var mid = (left + right) / 2
+
+		res := chernoffHelper(mid, k)
+		if res <= alpha {
+			right = math.Nextafter(mid, 0.0)
+		} else {
+			left = math.Nextafter(mid, math.MaxFloat64)
+		}
+
+	}
+
+	fmt.Println("Chernoff For alpha = ", alpha, " delta =", left)
+
+}
+
+func ChGuysDeltas() {
+	alphas := []float64{0.05, 0.01, 0.005}
+	var k uint = 400
+
+	for _, a := range alphas {
+		chebyschevHelper(a, k)
+		chernoffBinSearch(a, k)
+	}
 }

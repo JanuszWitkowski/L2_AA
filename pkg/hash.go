@@ -85,3 +85,8 @@ func Hash_md4(data, hashLength uint) float64 {
 	hash := md4.New().Sum(uintToBytesLE(data))
 	return bytesToFloat64LE(hash[:], hashLength)
 }
+
+func Hash_bad(data, hashLength uint) float64 {
+	bytes := uintToBytesLE(data)
+	return bytesToFloat64LE(append(bytes[:1], []byte{0, 0, 0, 0, 0, 0, 0}...), hashLength)
+}

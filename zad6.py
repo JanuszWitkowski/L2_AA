@@ -3,7 +3,7 @@ import numpy as np
 import csv
 
 res = np.loadtxt('data/exp6.txt', unpack='False')
-names = ["Sha1", "Sha3", "Sha256", "Blake2b", "Blake2s", "Md5", "Md4"]
+names = ["Sha1", "Sha3", "Sha256", "Blake2b", "Blake2s", "Md5", "Md4", "Bad"]
 
 Bs = [8, 16, 24, 32, 40, 48]
 

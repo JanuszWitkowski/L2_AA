@@ -87,7 +87,7 @@ func Ex5c(Ns []uint) {
 
 		fmt.Println("Running Ex5c for k = ", mid)
 
-		res := runForGivenK(Ns, mid, Hash_blake2b, 6)
+		res := runForGivenKMC(Ns, mid, Hash_blake2b, 6)
 
 		for _, n := range res {
 			if n > 0.9 && n < 1.1 {
@@ -154,7 +154,7 @@ func Ex7(Ns []uint) {
 	alphas := []uint{9500, 9900, 9950}
 	h := Hash_sha256
 
-	res := runForGivenK(Ns, k, h, 4)
+	res := runForGivenKMC(Ns, k, h, 4)
 
 	sort.Slice(res, func(i, j int) bool { return res[i] < res[j] })
 
@@ -180,7 +180,7 @@ func Ex7(Ns []uint) {
 	fmt.Println("Done Ex7")
 }
 
-func runForGivenK(Ns []uint, k uint, h func(uint, uint) float64, hashLength uint) []float64 {
+func runForGivenKMC(Ns []uint, k uint, h func(uint, uint) float64, hashLength uint) []float64 {
 	res := make([]float64, len(Ns))
 	for i, n := range Ns {
 		ms := MultiSet_newMultiSet(n)
@@ -192,7 +192,7 @@ func runForGivenK(Ns []uint, k uint, h func(uint, uint) float64, hashLength uint
 }
 
 func getAvgRes(Ns []uint, k uint, h func(uint, uint) float64, hashLength uint) float64 {
-	res := runForGivenK(Ns, k, h, hashLength)
+	res := runForGivenKMC(Ns, k, h, hashLength)
 
 	sumOfDiffs := 0.0
 

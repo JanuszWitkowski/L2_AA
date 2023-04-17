@@ -85,7 +85,7 @@ func Ex5cHLL(Ns []uint) {
 
 		fmt.Println("Running Ex5c for k = ", mid)
 
-		res := runForGivenKHLL(Ns, Hash_blake2b_PURE, mid)
+		res := runForGivenBHLL(Ns, Hash_blake2b_PURE, mid)
 
 		for _, n := range res {
 			if n > 0.9 && n < 1.1 {
@@ -104,7 +104,30 @@ func Ex5cHLL(Ns []uint) {
 	fmt.Println("Done Ex5c")
 }
 
-func runForGivenKHLL(Ns []uint, h func(uint, uint) []byte, b uint32) []float64 {
+func Compare(Ns []uint) {
+	fmt.Println("Running Compare")
+	filename := "data/compare.txt"
+	f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
+
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	defer f.Close()
+
+	resHLL := runForGivenBHLL(Ns, Hash_blake2b_PURE, 5)
+	resMC := runForGivenKMC(Ns, 5, Hash_blake2b, 4)
+
+	for i := range resHLL {
+		fmt.Fprintf(f, "%f %f\n", resHLL[i], resMC[i])
+
+	}
+
+	fmt.Println("Done Compare")
+}
+
+func runForGivenBHLL(Ns []uint, h func(uint, uint) []byte, b uint32) []float64 {
 	res := make([]float64, len(Ns))
 	for i, n := range Ns {
 		ms := MultiSet_newMultiSet(n)

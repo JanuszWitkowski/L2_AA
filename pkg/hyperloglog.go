@@ -28,7 +28,7 @@ func Hyperloglog(ms *MultiSet, h func(uint, uint) []byte, b uint32) float64 {
 		sumWeird += math.Pow(2.0, -float64(elem))
 	}
 
-	nHLL := getAlpha(ms.n*ms.m) * float64(m*m) * (1.0 / sumWeird)
+	nHLL := getAlpha(m) * float64(m*m) * (1.0 / sumWeird)
 
 	if nHLL < 2.5*float64(m) {
 		V := count0(M)

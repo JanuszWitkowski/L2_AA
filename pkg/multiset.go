@@ -7,13 +7,15 @@ type MultiSet struct {
 	counter   uint
 	first     uint
 	elemsLeft uint
+	m         uint
 }
 
 func MultiSet_newMultiSet(n uint, nums ...uint) *MultiSet {
 	var left uint = n
-
+	var m uint = 1
 	if len(nums) > 0 {
 		left = nums[0] * left
+		m = nums[0]
 	}
 
 	return &MultiSet{
@@ -21,6 +23,7 @@ func MultiSet_newMultiSet(n uint, nums ...uint) *MultiSet {
 		counter:   0,
 		first:     (n * (n - 1)) / 2,
 		elemsLeft: left,
+		m:         m,
 	}
 }
 

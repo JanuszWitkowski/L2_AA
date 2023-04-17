@@ -90,3 +90,43 @@ func Hash_bad(data, hashLength uint) float64 {
 	bytes := uintToBytesLE(data)
 	return bytesToFloat64LE(append(bytes[:1], []byte{0, 0, 0, 0, 0, 0, 0}...), hashLength)
 }
+
+func Hash_sha1_PURE(data, hashLength uint) []byte {
+	hash := sha1.Sum(uintToBytesLE(data))
+	return hash[:hashLength]
+}
+
+func Hash_sha256_PURE(data, hashLength uint) []byte {
+	hash := sha256.Sum256(uintToBytesLE(data))
+	return hash[:hashLength]
+}
+
+func Hash_sha3_PURE(data, hashLength uint) []byte {
+	hash := sha3.Sum256(uintToBytesLE(data))
+	return hash[:hashLength]
+
+}
+
+func Hash_blake2b_PURE(data, hashLength uint) []byte {
+	hash := blake2b.Sum256(uintToBytesBE(data))
+	return hash[:hashLength]
+
+}
+
+func Hash_blake2s_PURE(data, hashLength uint) []byte {
+	hash := blake2s.Sum256(uintToBytesBE(data))
+	return hash[:hashLength]
+
+}
+
+func Hash_md5_PURE(data, hashLength uint) []byte {
+	hash := md5.Sum(uintToBytesLE(data))
+	return hash[:hashLength]
+
+}
+
+func Hash_md4_PURE(data, hashLength uint) []byte {
+	hash := md4.New().Sum(uintToBytesLE(data))
+	return hash[:hashLength]
+
+}

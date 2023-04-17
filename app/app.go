@@ -21,7 +21,7 @@ func main() {
 
 	// var wg sync.WaitGroup
 	// wg.Add(5)
-	// funcs := []func([]uint){pkg.Ex5a, pkg.Ex5b, pkg.Ex5c, pkg.Ex6, pkg.Ex7}
+	// funcs := []func([]uint){pkg.Ex5aHLL, pkg.Ex5bHLL, pkg.Ex5cHLL}
 
 	// for _, f := range funcs {
 	// 	ffunc := f
@@ -32,9 +32,10 @@ func main() {
 	// }
 
 	// wg.Wait()
-	// pkg.Ex5b(Ns)
-	// pkg.Ex5c(Ns) // 332
-	pkg.Ex6(Ns)
+	// pkg.Ex5aHLL(Ns)
+	// pkg.Ex5bHLL(Ns)
+	pkg.Ex5cHLL(Ns) // 332
+	// pkg.Ex6(Ns)
 	// pkg.ChGuysDeltas()
 	// pkg.Ex7(Ns)
 }

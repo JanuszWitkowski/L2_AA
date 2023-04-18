@@ -31,6 +31,6 @@ plt.close()
 
 
 print("\n")
-print("HyperLogLog\t\t MinCount")
-print(np.mean(res[0]), "\t", np.mean(res[1]))
-print(np.var(res[0]), "\t", np.var(res[1]))
+print("Moment\t\t HyperLogLog\t\t MinCount")
+print("Mean\t\t", np.mean(res[0]), "\t", np.mean(res[1]))
+print("Variance\t", np.var(res[0]), "\t", np.var(res[1]))

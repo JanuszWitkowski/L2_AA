@@ -117,7 +117,7 @@ func Compare(Ns []uint) {
 	defer f.Close()
 
 	resHLL := runForGivenBHLL(Ns, Hash_blake2b_PURE, 5)
-	resMC := runForGivenKMC(Ns, 5, Hash_blake2b, 4)
+	resMC := runForGivenKMC(Ns, 27, Hash_blake2b, 4)
 
 	for i := range resHLL {
 		fmt.Fprintf(f, "%f %f\n", resHLL[i], resMC[i])

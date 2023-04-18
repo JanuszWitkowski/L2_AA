@@ -33,9 +33,9 @@ func main() {
 
 	// wg.Wait()
 	// pkg.Ex5aHLL(Ns)
-	// pkg.Ex5bHLL(Ns)
+	pkg.Ex5bHLL(Ns)
 	// pkg.Ex5cHLL(Ns) // 332 // 9
-	pkg.Compare(Ns)
+	// pkg.Compare(Ns)
 	// pkg.Ex6(Ns)
 	// pkg.ChGuysDeltas()
 	// pkg.Ex7(Ns)

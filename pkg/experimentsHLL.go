@@ -42,7 +42,7 @@ func Ex5aHLL(Ns []uint) {
 func Ex5bHLL(Ns []uint) {
 	fmt.Println("Running Ex5b")
 
-	ks := []uint32{2, 5, 7, 10, 16}
+	ks := []uint32{2, 5, 7, 10, 11, 12, 13, 16}
 	filename := "data/exp5bHLL.txt"
 	f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 
